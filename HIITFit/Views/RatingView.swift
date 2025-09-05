@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct RatingView: View {
-  @Binding var rating: Int  // 1
-  let maximumRating = 5  // 2
+  @Binding var rating: Int
+  let maximumRating = 5
 
-  let onColor = Color.red  // 3
+  let onColor = Color.red
   let offColor = Color.gray
 
   var body: some View {
@@ -12,8 +12,8 @@ struct RatingView: View {
       ForEach(1 ..< maximumRating + 1, id: \.self) { index in
         Image(systemName: "waveform.path.ecg")
           .foregroundColor(
-            index > rating ? offColor : onColor)  // 4
-          .onTapGesture {  // 5
+            index > rating ? offColor : onColor)
+          .onTapGesture {
             rating = index
           }
       }

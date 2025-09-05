@@ -5,13 +5,14 @@ struct ContentView: View {
 
   var body: some View {
     TabView(selection: $selectedTab) {
-      WelcomeView(selectedTab: $selectedTab)  // 1
-        .tag(9)  // 2
+      WelcomeView(selectedTab: $selectedTab)
+        .tag(9)
       ForEach(Exercise.exercises.indices, id: \.self) { index in
         ExerciseView(selectedTab: $selectedTab, index: index)
-          .tag(index)  // 3
+          .tag(index)
       }
     }
+    .environmentObject(HistoryStore())
     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
   }
 }

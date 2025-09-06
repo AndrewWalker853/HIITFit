@@ -18,7 +18,7 @@ struct ExerciseView: View {
   }
 
   var startButton: some View {
-    Button("Start Exercise") {
+    RaisedButton(buttonText: "Start Exercise") {
       showTimer.toggle()
     }
   }
@@ -43,41 +43,54 @@ struct ExerciseView: View {
           selectedTab: $selectedTab,
           titleText: Exercise.exercises[index].exerciseName)
           .padding(.bottom)
-
-        VideoPlayerView(videoName: exercise.videoName)
-          .frame(height: geometry.size.height * 0.45)
-
-        HStack(spacing: 150) {
-          startButton
-          doneButton
-            .disabled(!timerDone)
-            .sheet(isPresented: $showSuccess) {
-              SuccessView(selectedTab: $selectedTab)
-                .presentationDetents([.medium, .large])
-            }
-        }
-        .font(.title3)
-        .padding()
-
-        if showTimer {
-          TimerView(
-            timerDone: $timerDone,
-            size: geometry.size.height * 0.07)
-        }
-
         Spacer()
-        RatingView(exerciseIndex: index)
-          .padding()
-
-        Button("History") {
-          showHistory.toggle()
+        ContainerView {
+          VStack {
+            VideoPlayerView(videoName: exercise.videoName)
+              .frame(height: geometry.size.height * 0.35)
+              .padding(20)
+            HStack(spacing: 150) {
+              startButton
+              doneButton
+                .disabled(!timerDone)
+                .sheet(isPresented: $showSuccess) {
+                  SuccessView(selectedTab: $selectedTab)
+                    .presentationDetents([.medium, .large])
+                }
+            }
+            .font(.title3)
+            .padding()
+            if showTimer {
+              TimerView(
+                timerDone: $timerDone,
+                size: geometry.size.height * 0.07)
+            }
+            Spacer()
+            RatingView(exerciseIndex: index)
+              .padding()
+            historyButton
+              .sheet(isPresented: $showHistory) {
+                HistoryView(showHistory: $showHistory)
+              }
+              .padding(.bottom)
+          }
         }
-        .sheet(isPresented: $showHistory) {
-          HistoryView(showHistory: $showHistory)
-        }
-          .padding(.bottom)
+        .frame(height: geometry.size.height * 0.8)
       }
     }
+  }
+
+  var historyButton: some View {
+    Button(
+      action: {
+        showHistory = true
+      }, label: {
+        Text("History")
+          .fontWeight(.bold)
+          .padding([.leading, .trailing], 5)
+      })
+      .padding(.bottom, 10)
+      .buttonStyle(EmbossedButtonStyle())
   }
 }
 
